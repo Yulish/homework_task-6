@@ -2,10 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 from django.db.models import Sum
+from decimal import Decimal, InvalidOperation
+
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    author_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
+    author_rate = models.DecimalField(max_digits=4, decimal_places=1, default=Decimal('0.0'))
     def __str__(self):
         return self.user.username
 
@@ -38,12 +40,10 @@ class Post(models.Model):
     post_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 
     def like(self):
-        self.like = True
         self.post_rate = self.post_rate + 1
         self.save()
 
     def dislike(self):
-        self.like = False
         self.post_rate = self.post_rate - 1
         self.save()
 
@@ -54,6 +54,9 @@ class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE)
     post = models.ForeignKey(Post, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return f"{self.post.post_head} - {self.category.category_name}"
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,14 +64,15 @@ class Comment(models.Model):
     comment = models.CharField(max_length=1000)
     comment_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 
+    def __str__(self):
+        return f"{self.user.username}: {self.comment[:50]}"
+
     def like(self):
-        self.like = True
         self.comment_rate = self.comment_rate + 1
         self.save()
 
     def dislike(self):
-        self.like = False
-        self.comment_rate = self.comment_rate – 1
+        self.comment_rate = self.comment_rate - 1
         self.save()
 
 
