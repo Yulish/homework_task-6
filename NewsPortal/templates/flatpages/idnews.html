@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+<h1>{{ news }}</h1>
+
+<h3 style="font-weight: normal;">{{ news.post_origin|date:'d M Y' }}</h3>
+<h4 style="font-weight: normal;">{{ news.post_text }}</h4>
+<h5 style="font-weight: normal;"> Рейтинг: {{ news.post_rate }} </h5>
+
+
+{% endblock content %}
