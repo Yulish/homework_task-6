@@ -1,4 +1,6 @@
 {% extends 'flatpages/default.html' %}
+{% load censor %}
+
 
 {% block title %}
 News
@@ -20,9 +22,9 @@ News
            </tr>
            {% for post in news %}
            <tr>
-               <td>{{ post.post_head }}</td>
+               <td>{{ post.post_head|censor }}</td>
                <td>{{ post.post_origin|date:'d M Y' }}</td>
-               <td>{{ post.post_text|truncatewords:20 }}</td>
+               <td>{{ post.post_text|truncatewords:20|censor }}</td>
            </tr>
            {% endfor %}
 
