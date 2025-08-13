@@ -3,6 +3,8 @@ from django.db import models
 from datetime import datetime
 from django.db.models import Sum
 from decimal import Decimal, InvalidOperation
+from django.urls import reverse
+
 
 
 class Author(models.Model):
@@ -52,6 +54,20 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_head
+
+    def get_absolute_url(self):
+        return reverse('news_search', args=[str(self.id)])
+
+    def get_detail_url(self):
+        if self.post_type == self.NEWS:
+            return reverse('news_detail', args=[str(self.id)])
+        elif self.post_type == self.ARTICLE:
+            return reverse('article_detail', args=[str(self.id)])
+        # Если тип поста не соответствует ни NEWS, ни ARTICLE, можно вернуть None или выбросить исключение
+        return None
+
+
+
 
 class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE)

@@ -1,0 +1,16 @@
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+
+{% block title %}
+Articles
+{% endblock title %}
+
+{% block content %}
+<h1>{{ articles }}</h1>
+
+<h3 style="font-weight: normal;">{{ article.post_origin|date:'d M Y' }}</h3>
+<h4 style="font-weight: normal;">{{ article.post_text|censor }}</h4>
+<h5 style="font-weight: normal;"> Рейтинг: {{ article.post_rate }} </h5>
+
+
+{% endblock content %}

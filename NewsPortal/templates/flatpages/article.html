@@ -4,14 +4,14 @@
 
 
 {% block title %}
-News
+Articles
 {% endblock title %}
 
 {% block content %}
-    <h2 style="font-weight: normal;"> Количество новостей: {{ page_obj.paginator.count }} </h2>
+    <h2 style="font-weight: normal;"> Количество статей: {{ page_obj.paginator.count }} </h2>
     <p>Сегодня: {{ time_now|date:'d M Y'  }}</p>
-    <h3>{{ next_news|default_if_none:"Читайте важную новость сегодня в 18:00 мск!" }}</h3>
-    <h1>Все новости</h1>
+    <h3>{{ next_news|default_if_none:"" }}</h3>
+    <h1>Все статьи</h1>
 
 
 
@@ -33,7 +33,7 @@ News
             </tr>
             {% for post in page_obj %}
             <tr>
-                <td><a href="{% url 'news_detail' post.id %}">{{ post.post_head|censor }}</a></td>
+                <td><a href="{% url 'article_detail' post.id %}">{{ post.post_head|censor }}</a></td>
                 <td>{{ post.post_origin|date:'d M Y' }}</td>
                 <td>{{ post.post_text|truncatewords:20|censor }}</td>
                 <td>{{ post.author.user.username }}</td>
@@ -41,7 +41,7 @@ News
             {% endfor %}
         </table>
     {% else %}
-        <h2>Новостей нет!</h2>
+        <h2>Статей пока нет!</h2>
     {% endif %}
 
 <a href="?page=1">&laquo;first</a>
