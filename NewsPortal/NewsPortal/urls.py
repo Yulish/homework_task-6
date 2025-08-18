@@ -3,6 +3,10 @@ from django.urls import path, include
 from News_Portal.views import (NewsList, NewsDetail, NewsSearch,
                                ArticleList, ArticleDetail, ArticleCreate, NewsCreate, NewsUpdate,
                                NewsDelete, ArticleUpdate, ArticleSearch)
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView, LogoutView
+from News_Portal.views import google_login, GoogleCallbackView, YandexCallbackView, get_yandex_auth_url
+
 
 
 urlpatterns = [
@@ -20,6 +24,15 @@ urlpatterns = [
     path('articles/<int:pk>/edit/', ArticleUpdate.as_view(), name = 'article_update'),
     path('articles/<int:pk>/delete/', NewsDelete.as_view(), name='article_delete'),
     path('articles/search/', ArticleSearch.as_view(), name='article_search'),
+    path('login/', LoginView.as_view(template_name='sign/login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='sign/logout.html'), name='logout'),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/google/login/', google_login, name='google_login'),
+    path('accounts/google/login/callback/', GoogleCallbackView.as_view(), name='google_callback'),
+    path('accounts/yandex/login/', get_yandex_auth_url, name='yandex_login'),
+    path('accounts/yandex/login/callback/', YandexCallbackView.as_view(), name='yandex_callback'),
+
+
 ]
 
 

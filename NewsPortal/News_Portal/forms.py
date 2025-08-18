@@ -14,7 +14,6 @@ class ViewsForm(forms.ModelForm):
 
 
 
-
 class CreateForm(forms.ModelForm):
 
     class Meta:
