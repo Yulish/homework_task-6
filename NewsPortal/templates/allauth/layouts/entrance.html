@@ -1,0 +1,22 @@
+{% extends "allauth/layouts/base.html" %}
+
+{% block content %}
+    <h1>Добро пожаловать на наш сайт!</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'account_login' %}">Войти</a></li>
+            <li><a href="{% url 'account_signup' %}">Регистрация</a></li>
+            <li><a href="{% url 'news_list' %}">Новости</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h2>О нас</h2>
+        <p>Здесь вы можете найти информацию о нашем проекте и его целях.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Ваш Сайт. Все права защищены.</p>
+    </footer>
+{% endblock content %}
+

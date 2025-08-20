@@ -13,6 +13,9 @@ News
     <h3>{{ next_news|default_if_none:"Читайте важную новость сегодня в 18:00 мск!" }}</h3>
     <h1>Все новости</h1>
 
+{% if user|has_perm:'News_Portal.add_post' %}
+    <a href="{% url 'news_create' %}">Добавить новость</a>
+{% endif %}
 
 
 <form action="" method="get"
@@ -43,6 +46,7 @@ News
     {% else %}
         <h2>Новостей нет!</h2>
     {% endif %}
+
 
 <a href="?page=1">&laquo;first</a>
 

@@ -4,7 +4,8 @@ from datetime import datetime
 from django.db.models import Sum
 from decimal import Decimal, InvalidOperation
 from django.urls import reverse
-
+from allauth.account.forms import SignupForm
+from django.contrib.auth.models import Group
 
 
 class Author(models.Model):
@@ -63,10 +64,7 @@ class Post(models.Model):
             return reverse('news_detail', args=[str(self.id)])
         elif self.post_type == self.ARTICLE:
             return reverse('article_detail', args=[str(self.id)])
-        # Если тип поста не соответствует ни NEWS, ни ARTICLE, можно вернуть None или выбросить исключение
         return None
-
-
 
 
 class PostCategory(models.Model):
@@ -95,5 +93,11 @@ class Comment(models.Model):
         self.save()
 
 
+class CommonSignupForm(SignupForm):
 
+    def save(self, request):
+        user = super(CommonSignupForm, self).save(request)
+        common_group = Group.objects.get(name='common')
+        common_group.user_set.add(user)
+        return user
 

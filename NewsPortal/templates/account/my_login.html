@@ -1,0 +1,10 @@
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Войти</button>
+</form>
+ <h1>Это мой кастомный шаблон входа</h1>
+
+{% if is_not_authors %}
+    <button><a href="{% url 'upgrade' %}">Хочу в группу 'authors'!</a></button>
+{% endif %}

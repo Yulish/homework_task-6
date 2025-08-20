@@ -1,0 +1,81 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block head_title %}
+        {% endblock head_title %}
+    </title>
+    {% block extra_head %}
+    {% endblock extra_head %}
+</head>
+<body>
+    {% block body %}
+        {% if messages %}
+            <div>
+                <strong>{% trans "Messages:" %}</strong>
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div>
+            <strong>{% trans "Меню: " %}</strong>
+            <ul>
+                <li><a href="{% url 'index' %}">Главная страница</a></li>
+                {% if user.is_authenticated %}
+                    {% url 'account_email' as email_url_ %}
+                    {% if email_url_ %}
+                        <li>
+                            <a href="{{ email_url_ }}">{% trans "Изменить email" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'account_change_password' as change_password_url_ %}
+                    {% if change_password_url_ %}
+                        <li>
+                            <a href="{{ change_password_url_ }}">{% trans "Изменить пароль" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'socialaccount_connections' as connections_url_ %}
+                    {% if connections_url_ %}
+                        <li>
+                            <a href="{{ connections_url_ }}">{% trans "Сторонняя авторизация  " %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'mfa_index' as mfa_url_ %}
+                    {% if mfa_url_ %}
+                        <li>
+                            <a href="{{ mfa_url_ }}">{% trans "Two-Factor Authentication" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'usersessions_list' as usersessions_list_url_ %}
+                    {% if usersessions_list_url_ %}
+                        <li>
+                            <a href="{{ usersessions_list_url_ }}">{% trans "Sessions" %}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+        {% if author %}
+            <div>
+                <p>{% trans "User:" %} {{ request.user.username }}</p>
+                <strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong>
+                <p><a href="{% url 'profile_update' user.pk %}">Редактировать профиль</a></p>
+            </div>
+        {% endif %}
+        {% if is_not_authors %}
+            <button><a href="{% url 'upgrade' %}">Стать автором</a></button>
+        {% endif %}
+
+        {% block content %}
+        {% endblock content %}
+    {% endblock body %}
+    {% block extra_body %}
+    {% endblock extra_body %}
+</body>
+</html>

@@ -13,7 +13,9 @@ Articles
     <h3>{{ next_news|default_if_none:"" }}</h3>
     <h1>Все статьи</h1>
 
-
+{% if user|has_perm:'News_Portal.add_post' %}
+    <a href="{% url 'article_create' %}">Добавить статью</a>
+{% endif %}
 
 <form action="" method="get"
       {{ filterset.form.as_p }}

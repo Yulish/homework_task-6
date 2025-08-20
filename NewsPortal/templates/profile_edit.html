@@ -1,0 +1,48 @@
+{% extends "flatpages/default.html" %}
+{% load i18n %}  {# Загружаем модуль перевода #}
+
+{% block head_title %}
+    Профиль пользователя
+{% endblock head_title %}
+
+{% block content %}
+    <h2>{% trans "User  Profile" %}</h2>
+
+    <form method="post" action="{% url 'profile_update' user.id %}">
+        {% csrf_token %}
+        <style>
+            .form-group {
+                margin-bottom: 15px; /* Отступ между элементами */
+            }
+        </style>
+
+        <div class="form-group">
+            <label for="first_name">{% trans "First Name:" %}</label>
+            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="form-group">
+            <label for="last_name">{% trans "Last Name:" %}</label>
+            <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="form-group">
+            <label for="email">{% trans "Email:" %}</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}">
+        </div>
+        <div class="form-group">
+            <label for="current_password">{% trans "Current Password:" %}</label>
+            <input type="password" id="current_password" name="current_password" required>
+        </div>
+        <div class="form-group">
+            <label for="new_password">{% trans "New Password:" %}</label>
+            <input type="password" id="new_password" name="new_password">
+        </div>
+
+        <button type="submit">{% trans "Save" %}</button>
+    </form>
+
+    <div class="form-group">
+        <a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+    </div>
+{% endblock content %}
+
+

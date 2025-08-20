@@ -1,0 +1,37 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Подключение CSS, если нужно -->
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать на наш сайт!</h1>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'account_logout' %}">Выйти</a></li>
+                    <li><a href="{% url 'profile' user.pk %}">Мой профиль</a></li>
+                {% else %}
+                    <li><a href="{% url 'account_login' %}">Войти</a></li>
+                    <li><a href="{% url 'account_signup' %}">Регистрация</a></li>
+                {% endif %}
+                <li><a href="{% url 'news_list' %}">Новости</a></li>
+                <li><a href="{% url 'article_list' %}">Статьи</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>О нас</h2>
+            <p>Здесь вы можете найти информацию о нашем проекте и его целях.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025</p>
+    </footer>
+</body>
+</html>

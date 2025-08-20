@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load censor %}
+{% load custom_tags %}
 
 {% block title %}
 News
@@ -12,5 +13,8 @@ News
 <h4 style="font-weight: normal;">{{ news.post_text|censor }}</h4>
 <h5 style="font-weight: normal;"> Рейтинг: {{ news.post_rate }} </h5>
 
+{% if user|has_perm:'News_Portal.change_post' %}
+    <a href="{% url 'news_update' news.pk %}">Редактировать</a>
+{% endif %}
 
 {% endblock content %}

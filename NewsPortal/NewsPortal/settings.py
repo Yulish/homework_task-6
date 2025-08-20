@@ -14,6 +14,8 @@ SECRET_KEY = 'django-insecure-fi_fj*l=s=i6#^sup(ggk92s$^+asi+)1^&wxu_bgovy4voat0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ACCOUNT_FORMS = {'signup': 'News_Portal.models.CommonSignupForm'}
+
 ALLOWED_HOSTS = ['127.0.0.1']
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -32,11 +34,10 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_URL = '/accounts/google/login/'
+LOGIN_URL = '/'
 LOGIN_YANDEX_URL = '/accounts/yandex/login/'
-LOGIN_REDIRECT_URL = '/news/' # URL, на который будет перенаправлен пользователь после успешного входа
-LOGOUT_REDIRECT_URL = '/'  # URL, на который будет перенаправлен пользователь после выхода
-
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 # Application definition
@@ -50,13 +51,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'News_Portal',
+    # 'News_Portal',
     'django_filters',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.yandex'
+    'allauth.socialaccount.providers.yandex',
+    'News_Portal.apps.News_PortalConfig',
 
 ]
 SITE_ID = 1
@@ -140,30 +142,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '63012377443-oo6i317jejj7855feaqfod84fp82m2co.apps.googleusercontent.com',
-            'secret': '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',
-            'key': ''
-        },
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    },
-    'yandex': {
-        'APP': {
-            'client_id': '69da15e29df8499bbefdabb5a021a621',
-            'secret': 'ecc3e9c7ebd24842a83e809cf7c66495',
-            'key': ''
-        },
-        'SCOPE': ['email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-    }
-}
 
 STATIC_URL = 'static/'
 
