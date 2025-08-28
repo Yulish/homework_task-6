@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Author, Category, Comment, Post, PostCategory
+from .models import Author, Category, Comment, Post, PostCategory, Appointment
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import gettext_lazy as _
-
+admin.site.register(Appointment)
 admin.site.register(Author)
 admin.site.register(Category)
 admin.site.register(Comment)

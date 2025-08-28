@@ -1,0 +1,20 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Уведомление</title>
+</head>
+<body>
+<h>Здравствуйте! Новые публикации за неделю:</h>
+<ul>
+    {% for post in posts %}
+        <li>
+            <h3>{{ post.post_head }}</h3>
+            <p>{{ post.post_text|truncatewords:20 }}</p>
+            <a href="{{ link }}{% if post.post_type == 'news' %}{% url 'news_detail' post.pk %}{% else %}{% url 'article_detail' post.pk %}{% endif %}">Читать полностью</a>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

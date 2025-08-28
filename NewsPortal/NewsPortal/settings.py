@@ -16,14 +16,16 @@ DEBUG = True
 
 ACCOUNT_FORMS = {'signup': 'News_Portal.models.CommonSignupForm'}
 
-ALLOWED_HOSTS = ['127.0.0.1']
-
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+ALLOWED_HOSTS = ['127.0.0.1']
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 
 AUTHENTICATION_BACKENDS = [
@@ -51,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    # 'News_Portal',
+    'django_apscheduler',
     'django_filters',
     'allauth',
     'allauth.account',
@@ -59,6 +61,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yandex',
     'News_Portal.apps.News_PortalConfig',
+    'appointments',
+
 
 ]
 SITE_ID = 1
@@ -88,7 +92,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
 
             ],
         },
@@ -139,7 +142,25 @@ USE_I18N = True
 
 USE_TZ = True
 
+MANAGERS = [
+    ('Юлия', 'ishmakova1@yandex.ru'),
+]
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'ishmakova1@yandex.ru'
+EMAIL_HOST_PASSWORD = 'qsijnzkazzsnsoat'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'ishmakova1@yandex.ru'
 
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # 'mandatory' или 'optional'
+
+
+
+ADMINS = [
+    ('recipient', 'popenchenkova@mail.ru'),
+]
+SERVER_EMAIL = 'ishmakova1@yandex.ru'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -151,3 +172,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SOCIALACCOUNT_STORE_TOKENS = True
+SITE_URL = 'http://127.0.0.1:8000'

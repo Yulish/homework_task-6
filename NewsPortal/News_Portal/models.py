@@ -1,11 +1,11 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timezone
 from django.db.models import Sum
 from decimal import Decimal, InvalidOperation
 from django.urls import reverse
 from allauth.account.forms import SignupForm
-from django.contrib.auth.models import Group
+
 
 
 class Author(models.Model):
@@ -25,10 +25,11 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories', blank=True)
 
     def __str__(self):
-        return self.category_name
+        return self.name
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -58,6 +59,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('news_search', args=[str(self.id)])
+
 
     def get_detail_url(self):
         if self.post_type == self.NEWS:
@@ -100,4 +102,23 @@ class CommonSignupForm(SignupForm):
         common_group = Group.objects.get(name='common')
         common_group.user_set.add(user)
         return user
+
+
+
+
+class Appointment(models.Model):
+    date = models.DateField(
+        default=datetime.utcnow,
+    )
+    client_name = models.CharField(
+        max_length=200
+    )
+    message = models.TextField()
+
+    def __str__(self):
+        return f'{self.client_name}: {self.message}'
+
+
+
+
 

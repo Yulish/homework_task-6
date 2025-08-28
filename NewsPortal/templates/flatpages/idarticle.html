@@ -15,6 +15,9 @@ Articles
 
 {% if user|has_perm:'News_Portal.change_post' %}
     <a href="{% url 'article_update' article.pk %}">Редактировать</a>
+    <p><a href="{% url 'article_delete' article.pk %}">Удалить</a></p>
+    <p><a href="{% url 'article_list' %}">К статьям</a></p>
+
 {% endif %}
 
 {% endblock content %}

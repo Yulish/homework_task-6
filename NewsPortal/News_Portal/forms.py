@@ -25,16 +25,18 @@ class CreateForm(forms.ModelForm):
             'post_head': 'Заголовок',
             # 'author': 'Автор',
             'post_text': 'Введите текст',
+
         }
 
 class Add_Change_Form(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['post_type','post_head', 'post_text']
+        fields = ['post_type','post_head', 'post_text', 'categories']
         labels = {
             'post_type': 'Выберите тип публикации: ',
             'post_head': 'Заголовок',
             'post_text': 'Введите текст',
+            'categories': 'Категория',
         }
 
     def save(self, commit=True, user=None):
@@ -43,6 +45,7 @@ class Add_Change_Form(forms.ModelForm):
             post.author = user
         if commit:
             post.save()
+            self.save_m2m()
         return post
 
 

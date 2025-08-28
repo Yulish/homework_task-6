@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from News_Portal.views import (NewsList, NewsDetail, NewsSearch,
-                               ArticleList, ArticleDetail, IndexView,
-                               NewsDelete, ArticleSearch, upgrade_me,
-                               ProfileUpdate, ProfileView, AddPost, ChangePost)
+from News_Portal.views import (IndexView, NewsList, NewsDetail,
+                               ChangePost, NewsSearch, AddPost, NewsDelete, ArticleDelete,
+                               ArticleList, ArticleDetail,ArticleSearch,ArticleDelete,
+                               AddPost, upgrade_me,ProfileView, NewsCategory,
+                               subscribe, unsubscribe, AppointmentView, ProfileUpdate, ArticleCategory)
+
+
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -19,15 +22,24 @@ urlpatterns = [
     path('articles/<int:pk>/', ArticleDetail.as_view(), name='article_detail'),
     path('articles/create/', AddPost.as_view(), name='article_create'),
     path('articles/<int:pk>/edit/', ChangePost.as_view(), name = 'article_update'),
-    path('articles/<int:pk>/delete/', NewsDelete.as_view(), name='article_delete'),
+    path('articles/<int:pk>/delete/', ArticleDelete.as_view(), name='article_delete'),
     path('articles/search/', ArticleSearch.as_view(), name='article_search'),
     path('post/add', AddPost.as_view(), name='add_post'),
     path('accounts/', include('allauth.urls')),
     path('upgrade/', upgrade_me, name = 'upgrade'),
-    # path('redirect-profile/', redirect_to_profile, name='redirect_to_profile'),
     path('users/<int:pk>/', ProfileView.as_view(), name='profile'),
     path('users/<int:pk>/profile_update/', ProfileUpdate.as_view(), name='profile_update'),
-
+    # path('appointment/', AppointmentView.as_view(), name='appointment'),
+    # path('appointment/done', AppointmentView.as_view(), name='appointment_done'),
+    # path('category/<int:category_id>/subscribe/', subscribe_category, name='subscribe_category'),
+    # path('category/<int:category_id>/unsubscribe/', unsubscribe_category, name='unsubscribe_category'),
+    path('news/categories/<int:pk>/', NewsCategory.as_view(), name='category_list'),
+    path('articles/categories/<int:pk>/', ArticleCategory.as_view(), name='art_category_list'),
+    path('categories/<int:pk>/subscribe/', subscribe, name='subscribe'),
+    path('categories/<int:pk>/unsubscribe/', unsubscribe, name='unsubscribe'),
+    path('appointment/', AppointmentView.as_view(), name='appointment'),
+    path('appointment/done', AppointmentView.as_view(), name='appointment_done'),
+    # path('appointments/', include(('appointments.urls'), namespace='appointments')),
 ]
 
 

@@ -1,0 +1,82 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_tags %}
+{% load censor %}
+
+{% block title %}
+Статьи
+{% endblock title %}
+
+{% block content %}
+    {% if is_not_subscriber %}
+      <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn sm">Подписаться</a></p>
+    {% else%}
+        <p class="text-center"><a href="{% url 'unsubscribe' category.id %}" class="btn btn-secondary btn sm">Отписаться</a></p>
+    {% endif %}
+    <h2 style="font-weight: normal;"> Количество статей в категории {{category.name}}: {{ page_obj.paginator.count }} </h2>
+    <p>Сегодня: {{ time_now|date:'d M Y' }}</p>
+    <h3>{{ next_news|default_if_none:"Читайте важную статью сегодня в 18:00 мск!" }}</h3>
+    <p1><a href="{% url 'article_list' %}">Все статьи</a></p1>
+
+    <div class="categories">
+        <h3>📂 Другие статьи:</h3>
+        {% for category in categories %}
+            <li style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;">
+                <a href="{% url 'art_category_list' category.id %}"
+                   style="text-decoration: none; color: #007bff; font-weight: 500;">
+                    {{ category.name }}
+                </a>
+            </li>
+        {% empty %}
+            <li> Нет категорий</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+    {% if user|has_perm:'News_Portal.add_post' %}
+        <a href="{% url 'article_create' %}">Добавить статью</a>
+    {% endif %}
+
+        <p><form action="{% url 'article_search' %}" method="get"></p>
+        {{ filterset.form.as_p }}
+        <button type="submit" class="btn btn-secondary btn-sm">Найти</button>
+    </form>
+    <hr>
+
+    {% if page_obj %}
+        <table cellspacing="10">
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Аннотация</td>
+                <td>Автор</td>
+            </tr>
+            {% for post in page_obj %}
+                <tr>
+                    <td><a href="{% url 'article_detail' post.id %}">{{ post.post_head|censor }}</a></td>
+                    <td>{{ post.post_origin|date:'d M Y' }}</td>
+                    <td>{{ post.post_text|truncatewords:20|censor }}</td>
+                    <td>{{ post.author.user.username }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Статей пока нет!</h2>
+    {% endif %}
+
+    <a href="?page=1">&laquo;first</a>
+
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+    {% endif %}
+
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+    {% endif %}
+
+    {% if page_obj.number < page_obj.paginator.num_pages %}
+        <a href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
+    {% endif %}
+{% endblock content %}

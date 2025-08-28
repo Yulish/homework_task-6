@@ -14,7 +14,10 @@ News
 <h5 style="font-weight: normal;"> Рейтинг: {{ news.post_rate }} </h5>
 
 {% if user|has_perm:'News_Portal.change_post' %}
-    <a href="{% url 'news_update' news.pk %}">Редактировать</a>
+<p><a href="{% url 'news_update' news.pk %}">Редактировать</a></p>
+<p><a href="{% url 'news_delete' news.pk %}">Удалить</a></p>
+<p><a href="{% url 'news_list' %}">К новостям</a></p>
+
 {% endif %}
 
 {% endblock content %}
