@@ -10,7 +10,6 @@ from .models import PostCategory, Appointment, Post, Author
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives, send_mail, mail_admins, mail_managers
 from django.dispatch import receiver
-# from .views import AddPost
 from django.core.exceptions import ValidationError
 
 @receiver(user_logged_in)
@@ -27,17 +26,12 @@ def create_author(sender, instance, created, **kwargs):
     if created:
         Author.objects.create(user=instance)
 
-
-
-def send_notifications(preview, pk, title, post, subscribers):
-    html_content = render_to_string('post_created_email.html',
-                                    {'text': preview, 'link': f'{settings.SITE_URL}/news/{pk}'})
-    if post and hasattr(post, 'post_type'):
-        if Post.NEWS:
-            html_content = render_to_string('post_created_email.html',
+def send_notifications(preview, pk, title, post_type, subscribers):
+    if post_type == 'news':
+        html_content = render_to_string('news/post_created_email.html',
                                         {'text': preview, 'link': f'{settings.SITE_URL}/news/{pk}'})
-        else:
-            html_content = render_to_string('article_created_email.html',
+    else:
+        html_content = render_to_string('articles/article_created_email.html',
                                         {'text': preview, 'link': f'{settings.SITE_URL}/articles/{pk}'})
 
     msg = EmailMultiAlternatives(
@@ -50,17 +44,21 @@ def send_notifications(preview, pk, title, post, subscribers):
     msg.send()
 
 
-@receiver (m2m_changed, sender=PostCategory)
+@receiver(m2m_changed, sender=PostCategory)
 def notify_about_new_post(sender, instance, **kwargs):
-    if kwargs['action'] == 'post_add':
+
+    if kwargs.get('action') == 'post_add':
         categories = instance.categories.all()
         subscribers_emails = []
 
         for cat in categories:
             subscribers = cat.subscribers.all()
-            subscribers_emails += [s.email for s in subscribers]
+            subscribers_emails.extend(s.email for s in subscribers)
 
         send_notifications(instance.preview(), instance.pk, instance.post_head, instance.post_type, subscribers_emails)
+
+
+
 
 @receiver(post_save, sender=Appointment)
 def notify_managers_appointment(sender, instance, created, **kwargs):

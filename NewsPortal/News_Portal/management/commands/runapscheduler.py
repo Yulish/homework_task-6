@@ -51,7 +51,7 @@ class Command(BaseCommand):
         scheduler = BackgroundScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(day_of_week="thu", hour="17", minute="28"),
+            trigger=CronTrigger(day_of_week="thu", hour="21", minute="01"),
             id="my_job",
             max_instances=1,
             replace_existing=True,

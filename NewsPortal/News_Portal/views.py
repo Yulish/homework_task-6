@@ -24,7 +24,7 @@ User = get_user_model()
 
 class NewsList(ListView):  # post
     model = Post
-    template_name = 'flatpages/newslist.html'
+    template_name = 'news/newslist.html'
     context_object_name = 'posts'
     paginate_by = 10
     items = list(range(1, len(Post.objects.all()) + 1))
@@ -49,7 +49,7 @@ class NewsList(ListView):  # post
 
 class NewsCategory(NewsList):
     model = Post
-    template_name = 'flatpages/category_list.html'
+    template_name = 'news/category_list.html'
     context_object_name = 'category'
 
     def get_queryset(self):
@@ -66,7 +66,7 @@ class NewsCategory(NewsList):
 
 class NewsDetail(DetailView):
     model = Post
-    template_name = 'flatpages/idnews.html'
+    template_name = 'news/idnews.html'
     context_object_name = 'news'
 
     def get_queryset(self):
@@ -75,7 +75,7 @@ class NewsDetail(DetailView):
 
 class NewsSearch(ListView):
     model = Post
-    template_name = 'flatpages/news_search.html'
+    template_name = 'news/news_search.html'
     context_object_name = 'news'
 
     def get_queryset(self):
@@ -92,14 +92,14 @@ class NewsSearch(ListView):
 
 class NewsDelete(DeleteView):
     model = Post
-    template_name = 'flatpages/news_delete.html'
+    template_name = 'news/news_delete.html'
     success_url = reverse_lazy('news_list')
 
 
 class ArticleList(ListView):
     model = Post
     queryset = Post.objects.order_by('-post_origin')
-    template_name = 'flatpages/article.html'
+    template_name = 'articles/article.html'
     context_object_name = 'article'  # берется из модели POST ARTICLE = 'article'
     paginate_by = 10
     items = list(range(1, len(Post.objects.all()) + 1))
@@ -123,7 +123,7 @@ class ArticleList(ListView):
 
 class ArticleCategory(ArticleList):
     model = Post
-    template_name = 'flatpages/art_category_list.html'
+    template_name = 'articles/art_category_list.html'
     context_object_name = 'category'
 
     def get_queryset(self):
@@ -140,7 +140,7 @@ class ArticleCategory(ArticleList):
 
 class ArticleDetail(DetailView):
     model = Post
-    template_name = 'flatpages/idarticle.html'
+    template_name = 'articles/idarticle.html'
     context_object_name = 'article'
 
     def get_queryset(self):
@@ -149,7 +149,7 @@ class ArticleDetail(DetailView):
 
 class ArticleSearch(ListView):
     model = Post
-    template_name = 'flatpages/article_search.html'
+    template_name = 'articles/article_search.html'
     context_object_name = 'article'
 
     def get_queryset(self):
@@ -166,7 +166,7 @@ class ArticleSearch(ListView):
 
 class ArticleDelete(DeleteView):
     model = Post
-    template_name = 'flatpages/article_delete.html'
+    template_name = 'articles/article_delete.html'
     success_url = reverse_lazy('article_list')
 
 
@@ -181,7 +181,7 @@ class AddPost(PermissionRequiredMixin, CreateView):
     form_class = Add_Change_Form
 
     def get_template_names(self):
-        return ['flatpages/article_create.html']
+        return ['articles/article_create.html']
 
     def form_valid(self, form):
         author, created = Author.objects.get_or_create(user=self.request.user)
@@ -203,12 +203,12 @@ class AddPost(PermissionRequiredMixin, CreateView):
         if form.instance.post_type == 'news':
             # self.success_url = reverse('news_detail', kwargs={'pk': post.pk})
             self.success_url = reverse_lazy('news_detail', kwargs={'pk': form.instance.pk})
-            self.template_name = 'flatpages/news_create.html'
+            self.template_name = 'news/news_create.html'
         else:
 
             # self.success_url = reverse('article_detail', kwargs={'pk': post.pk})
             self.success_url = reverse_lazy('article_detail', kwargs={'pk': form.instance.pk})
-            self.template_name = 'flatpages/article_create.html'
+            self.template_name = 'articles/article_create.html'
 
         return super().form_valid(form)
 
@@ -219,7 +219,7 @@ class ChangePost(PermissionRequiredMixin, UpdateView):
     form_class = Add_Change_Form
 
     def get_template_names(self):
-        return ['flatpages/article_edit.html']
+        return ['articles/article_edit.html']
 
     def form_valid(self, form):
         author, created = Author.objects.get_or_create(user=self.request.user)
@@ -227,10 +227,10 @@ class ChangePost(PermissionRequiredMixin, UpdateView):
         form.save()
         if form.instance.post_type == 'news':
             self.success_url = reverse('news_detail', kwargs={'pk': form.instance.pk})
-            self.template_name = 'flatpages/news_edit.html'
+            self.template_name = 'news/news_edit.html'
         else:
             self.success_url = reverse('article_detail', kwargs={'pk': form.instance.pk})
-            self.template_name = 'flatpages/article_edit.html'
+            self.template_name = 'articles/article_edit.html'
 
         return super().form_valid(form)
 
@@ -305,7 +305,7 @@ def unsubscribe(request, pk):
         category.subscribers.remove(user)
 
     message = 'Вы отписались от рассылки постов в категории: '
-    return render(request, 'flatpages/subscribe.html', {'category': category, 'message': message})
+    return render(request, 'flatpages/unsubscribe.html', {'category': category, 'message': message})
 
 
 class AppointmentView(View):
